@@ -28,6 +28,17 @@ A Microservices-based order management system built with Node.js (Express), Mong
         └── README.md
 
 ## Getting Started
+### 1.  Install Docker & Docker Compose
+### 2.  Clone and Run the Project 
+### 3.  Default ports:
+
+- API Gateway: 4000
+- User Service: 
+- Product Service	4002
+- Order Service	4003
+- Notification Service	4004
+- MongoDB	27017
+- RabbitMQ UI	15672
 
 ## Message Queue Flow
 - Order Service sends a message when an order is created.
