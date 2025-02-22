@@ -4,6 +4,9 @@ const morgan = require("morgan");
 const { default: helmet } = require("helmet");
 const compression = require("compression");
 const cors = require("cors");
+const { errorHandler } = require("./core/errorHandler");
+const { NotFound } = require("./core/errorResponse");
+const { OK } = require("./core/successResponse");
 
 // middlewares
 const app = express();
@@ -18,25 +21,18 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 require("./dbs/init.mongodb");
 
 // init routes
-app.use("/", require("./routes"));
+app.use("/", (req, res, next) => {
+  return OK({ res, message: "This is user service ..." });
+});
+
+app.use("/v1", require("./routes"));
 
 // handle errors
-app.use((req, res) => {
-  return res.status(404).json({
-    status: "error",
-    code: 404,
-    message: `Route ${req.originalUrl} not found`,
-  });
+app.use((req, res, next) => {
+  return next(NotFound());
 });
 
-app.use((error, req, res, next) => {
-  const statusCode = error.status || 500;
-  return res.status(statusCode).json({
-    status: "error",
-    code: statusCode,
-    message: error.message || "Internal server error",
-    stack: process.env.NODE_ENV === "dev" ? error.stack : undefined,
-  });
-});
+// error handler middlewares
+app.use(errorHandler);
 
 module.exports = app;
