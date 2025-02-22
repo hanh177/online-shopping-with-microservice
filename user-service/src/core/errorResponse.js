@@ -23,6 +23,9 @@ const NotFound = (message = ReasonPhrases.NOT_FOUND) =>
 const InternalServerError = (message = ReasonPhrases.INTERNAL_SERVER_ERROR) =>
   new ErrorResponse(message, StatusCodes.INTERNAL_SERVER_ERROR);
 
+const ConflictError = (message = ReasonPhrases.CONFLICT) =>
+  new ErrorResponse(message, StatusCodes.CONFLICT);
+
 module.exports = {
   ErrorResponse,
   BadRequest,
@@ -30,4 +33,5 @@ module.exports = {
   Forbidden,
   NotFound,
   InternalServerError,
+  ConflictError,
 };

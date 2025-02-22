@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const { default: helmet } = require("helmet");
 const compression = require("compression");
 const cors = require("cors");
-const { errorHandler } = require("./core/errorHandler");
+const { errorHandler } = require("./middlewares/core/errorHandler");
 const { NotFound } = require("./core/errorResponse");
 const { OK } = require("./core/successResponse");
 
@@ -21,11 +21,11 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 require("./dbs/init.mongodb");
 
 // init routes
+app.use("/v1", require("./routes"));
+
 app.use("/", (req, res, next) => {
   return OK({ res, message: "This is user service ..." });
 });
-
-app.use("/v1", require("./routes"));
 
 // handle errors
 app.use((req, res, next) => {
