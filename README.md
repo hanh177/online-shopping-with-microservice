@@ -33,12 +33,12 @@ A Microservices-based order management system built with Node.js (Express), Mong
 ### 3.  Default ports:
 
 - API Gateway: 4000
-- User Service: 
-- Product Service	4002
-- Order Service	4003
-- Notification Service	4004
-- MongoDB	27017
-- RabbitMQ UI	15672
+- User Service: 4001
+- Product Service: 4002
+- Order Service: 4003
+- Notification Service:	4004
+- MongoDB: 27017
+- RabbitMQ UI: 15672
 
 ## Message Queue Flow
 - Order Service sends a message when an order is created.
