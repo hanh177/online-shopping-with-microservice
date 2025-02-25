@@ -1,5 +1,43 @@
 const express = require("express");
+const asyncHandler = require("express-async-handler");
 const router = express.Router();
 
-router.use("/auth", require("./auth.route"));
+const authController = require("../controllers/auth.controller");
+const validate = require("../middlewares/validateRequest");
+const { registerSchema, loginSchema } = require("../validators/auth.validator");
+const { OK } = require("../core/successResponse");
+const { isAuthenticated, loadUser } = require("../middlewares/auth");
+const userController = require("../controllers/user.controller");
+
+// Auth
+router.post(
+  "/register",
+  validate(registerSchema),
+  asyncHandler(authController.register)
+);
+router.post(
+  "/login",
+  validate(loginSchema),
+  asyncHandler(authController.login)
+);
+
+// Users
+router.get(
+  "/me",
+  asyncHandler(isAuthenticated),
+  asyncHandler(userController.getMe)
+);
+
+router.get(
+  "/:id",
+  asyncHandler(loadUser),
+  asyncHandler(userController.findOne)
+);
+
+router.put(
+  "/",
+  asyncHandler(isAuthenticated),
+  asyncHandler(userController.update)
+);
+
 module.exports = router;

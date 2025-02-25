@@ -14,7 +14,7 @@ const { pickObjectData } = require("../utils");
 class AuthService {
   static register = async ({ name, email, password }) => {
     const holderUser = await userModel.findOne({ email });
-    if (holderUser) return ConflictError("Email existed");
+    if (holderUser) throw ConflictError("Email existed");
     const newUser = await userModel.create({
       name,
       email,
@@ -31,7 +31,7 @@ class AuthService {
   };
   static login = async ({ email, password }) => {
     const user = await userModel.findOne({ email });
-    if (!user) return BadRequest("Email not found");
+    if (!user) throw BadRequest("Email not found");
 
     const isMatch = await validatePassword(password, user.password);
     if (!isMatch) throw Unauthorized("Password is not correct");

@@ -1,8 +1,5 @@
 const winston = require("winston");
-const {
-  ErrorResponse,
-  InternalServerError,
-} = require("../../core/errorResponse");
+const { ErrorResponse, InternalServerError } = require("../core/errorResponse");
 
 const logger = winston.createLogger({
   level: "error",
