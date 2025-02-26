@@ -3,22 +3,21 @@ const {
   BadRequest,
   Unauthorized,
 } = require("../core/errorResponse");
-const userModel = require("../models/user.model");
 const {
   generateSignature,
   generatePassword,
   validatePassword,
 } = require("../utils/auth.util");
 const { pickObjectData } = require("../utils");
+const userRepository = require("../repositories/user.repository");
 
 class AuthService {
-  static register = async ({ name, email, password }) => {
-    const holderUser = await userModel.findOne({ email });
+  static register = async (data) => {
+    const holderUser = await userRepository.findOne({ email: data.email });
     if (holderUser) throw ConflictError("Email existed");
-    const newUser = await userModel.create({
-      name,
-      email,
-      password: await generatePassword(password),
+    const newUser = await userRepository.create({
+      ...data,
+      password: await generatePassword(data.password),
     });
 
     const payload = pickObjectData(newUser, ["_id", "name", "email"]);
@@ -30,7 +29,10 @@ class AuthService {
     };
   };
   static login = async ({ email, password }) => {
-    const user = await userModel.findOne({ email });
+    const user = await userRepository.findOne({
+      query: { email },
+      select: "+password",
+    });
     if (!user) throw BadRequest("Email not found");
 
     const isMatch = await validatePassword(password, user.password);

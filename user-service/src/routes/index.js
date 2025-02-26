@@ -5,7 +5,6 @@ const router = express.Router();
 const authController = require("../controllers/auth.controller");
 const validate = require("../middlewares/validateRequest");
 const { registerSchema, loginSchema } = require("../validators/auth.validator");
-const { OK } = require("../core/successResponse");
 const { isAuthenticated, loadUser } = require("../middlewares/auth");
 const userController = require("../controllers/user.controller");
 
@@ -31,7 +30,7 @@ router.get(
 router.get(
   "/:id",
   asyncHandler(loadUser),
-  asyncHandler(userController.findOne)
+  asyncHandler(userController.findById)
 );
 
 router.put(

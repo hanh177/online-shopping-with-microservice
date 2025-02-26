@@ -23,6 +23,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     status: {
       type: String,
@@ -35,6 +36,12 @@ const userSchema = new Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+  return user;
+};
 
 //Export the model
 module.exports = model(DOCUMENT_NAME, userSchema);
