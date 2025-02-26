@@ -1,4 +1,5 @@
 const { OK } = require("../core/successResponse");
+const userModel = require("../models/user.model");
 const { omitObjectData } = require("../utils");
 
 class UserController {
@@ -19,6 +20,13 @@ class UserController {
       res,
 
       metadata: {},
+    });
+  };
+
+  getAll = async (req, res, next) => {
+    return OK({
+      res,
+      metadata: await userModel.find(req.query),
     });
   };
 }

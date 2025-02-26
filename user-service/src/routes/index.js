@@ -40,4 +40,6 @@ router.put(
   asyncHandler(userController.update)
 );
 
+router.get("/", asyncHandler(userController.getAll));
+
 module.exports = router;
