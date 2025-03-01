@@ -33,7 +33,7 @@ class ProductController {
     return OK({
       res,
       message: "Find one product success",
-      metadata: await ProductService.findOne(req.params.id),
+      metadata: await ProductService.findById(req.params.id),
     });
   };
 
@@ -42,6 +42,16 @@ class ProductController {
       res,
       message: "Find products success",
       metadata: await ProductService.find(req.query),
+    });
+  };
+
+  findByUserId = async (req, res, next) => {
+    const userId = req.params?.userId || req.user._id;
+
+    return OK({
+      res,
+      message: "Find products by user id success",
+      metadata: await ProductService.find({ ...req.query, owner: userId }),
     });
   };
 }

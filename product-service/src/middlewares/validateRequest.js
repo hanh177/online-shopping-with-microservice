@@ -1,7 +1,8 @@
 const { BadRequest } = require("../core/errorResponse");
 
 const validate = (schema) => (req, res, next) => {
-  const { error } = schema.validate(req.body, { abortEarly: false });
+  const dataToValidate = req.method === "GET" ? req.query : req.body;
+  const { error } = schema.validate(dataToValidate, { abortEarly: false });
 
   if (error) {
     const details = error.details.map((err) => err.message);

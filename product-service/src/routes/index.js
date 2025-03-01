@@ -1,14 +1,35 @@
 const express = require("express");
 const asyncHandler = require("express-async-handler");
-const { isAuthenticated } = require("../middlewares/auth");
+const { isAuthenticated, loadUser } = require("../middlewares/auth");
 const { isProductOwner } = require("../middlewares/product");
 const productController = require("../controllers/product.controller");
 const validateRequest = require("../middlewares/validateRequest");
-const { productSchema } = require("../validators/product.validator");
+const {
+  productSchema,
+  productQuerySchema,
+} = require("../validators/product.validator");
 const router = express.Router();
 
-router.get("/", asyncHandler(productController.findAll));
+router.get(
+  "/",
+  validateRequest(productQuerySchema),
+  asyncHandler(productController.findAll)
+);
+
+router.get(
+  "/me",
+  asyncHandler(isAuthenticated),
+  validateRequest(productQuerySchema),
+  asyncHandler(productController.findByUserId)
+);
+
 router.get("/:id", asyncHandler(productController.findOneProduct));
+router.get(
+  "/user/:userId",
+  asyncHandler(loadUser),
+  validateRequest(productQuerySchema),
+  asyncHandler(productController.findByUserId)
+);
 
 /// authentication required routes
 router.use(asyncHandler(isAuthenticated));
