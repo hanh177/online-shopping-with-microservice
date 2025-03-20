@@ -1,7 +1,12 @@
 const orderModel = require("../models/order.model");
 
 class OrderRepository {
-  async findAll({ query, limit, skip, sort }) {
+  async findAll({
+    query = {},
+    limit = 50,
+    skip = 0,
+    sort = { updatedAt: -1 },
+  }) {
     return {
       total: await orderModel.countDocuments(query),
       items: await orderModel.find(query).sort(sort).skip(skip).limit(limit),

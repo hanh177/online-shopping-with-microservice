@@ -1,4 +1,5 @@
 const productModel = require("../models/product.model");
+const { toMongoObjectId } = require("../utils");
 
 class ProductRepository {
   async findAll({ query, limit, skip, sort }) {
@@ -8,7 +9,7 @@ class ProductRepository {
     };
   }
   async findById(id) {
-    return productModel.findById(id);
+    return productModel.findById(toMongoObjectId(id));
   }
   async findOne(query) {
     return productModel.findOne(query);
@@ -20,7 +21,9 @@ class ProductRepository {
     return productModel.create(data);
   }
   async update(id, data) {
-    return productModel.findByIdAndUpdate(id, data, { new: true });
+    return productModel.findByIdAndUpdate(id, data, {
+      new: true,
+    });
   }
 }
 

@@ -9,6 +9,7 @@ const orderSchema = Joi.object({
         quantity: Joi.number().min(1).required(),
       })
     )
+    .min(1)
     .required(),
 });
 

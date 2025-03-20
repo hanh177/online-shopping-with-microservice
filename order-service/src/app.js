@@ -6,6 +6,7 @@ const compression = require("compression");
 const cors = require("cors");
 const { errorHandler } = require("./middlewares/errorHandler");
 const { NotFound } = require("./core/errorResponse");
+const { connectRabbitMQ } = require("./massageQueue/config/rabbitmq");
 
 // middlewares
 const app = express();
@@ -18,6 +19,11 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 // init mongodb
 require("./dbs/init.mongodb");
+
+// connect rabbitMQ
+(async () => {
+  await connectRabbitMQ(); // Chờ kết nối hoàn tất
+})();
 
 // init routes
 app.use("/", require("./routes"));

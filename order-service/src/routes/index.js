@@ -4,12 +4,14 @@ const { isAuthenticated } = require("../middlewares/auth");
 const validate = require("../middlewares/validateRequest");
 const { orderSchema } = require("../validators/order.validator");
 const OrderController = require("../controllers/order.controller");
+const { validateProducts } = require("../middlewares/order");
 const router = express.Router();
 
 router.use(asyncHandler(isAuthenticated));
 router.post(
-  "/create",
+  "/",
   validate(orderSchema),
+  asyncHandler(validateProducts),
   asyncHandler(OrderController.createOrder)
 );
 

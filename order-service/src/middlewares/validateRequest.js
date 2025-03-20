@@ -7,7 +7,6 @@ const validate = (schema) => (req, res, next) => {
     const details = error.details.map((err) => err.message);
     return next(BadRequest(details.join(", ")));
   }
-
   next();
 };
 
